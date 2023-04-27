@@ -1,17 +1,14 @@
 /**********************************************************************************************
-Macro Naam: column_overview
-Doel: Printen van metadata voor gebruik in een sas sessie.
+Macro Naam: dshead
+Doel: Geeft output van de eerste 10 regels (by default) van een dataset.
 Beschrijving:
 Opmerkingen:
-Afhankelijkheden: 	- dsdeletes van de MIAZ Macros
-					- printer macro	
+Afhankelijkheden: [een voorbeeld van een afhankelijkheid is een andere macro die in dit script zal worden aangeroepen]
    
 Parameters: 
 Naam		Optioneel (Y/N)		Voorbeld input		Beschrijving
 
-libn		Y					Datamartmiaz		De libref waar de dataset staat, default = work
-dataset		N					fct_schade			Neemt de dataset en geeft output van de verschillende kolommen + metadata
-output		Y					0 of 1				Print de output als default, maar kan de dataset ook outputten met 1
+DATASET		N					Datamartmiaz		Neemt de dataset en performeert wat transformaties
 
 Voorbeeld van gebruik:
 
@@ -35,15 +32,15 @@ TODO:
 
 =========================================================================================================
 **********************************************************************************************/
-%macro column_overview
+%macro dshead
 
 (
 
-        libn 		=	work /*LIBREF voor een database, voorbeeld: DMMIAZ. Default = Work*/,
+        libn 		=	work /*input library, default = work */	,
 
-        dataset	 	=		/*De dataset die je wilt bekijkt zien*/,
+        dataset 	=		/*De dataset die je wilt bekijkt zien*/,
         
-        output		=	0	/*0 Print de dataset. 1 output de dataset*/
+        nobs		= 	10 /*Aantal regels dat wordt opgezocht en geprint*/
 
 );
 
@@ -60,36 +57,19 @@ TODO:
 	%put --- libn			=		&libn;
 
 	%put --- dataset		=		&dataset;
+	
+	%put --- nobs			=		&nobs;
 
 	%put ---------------------------------------------------------------;
 
-	PROC CONTENTS data=&libn..&dataset. out=overview NOPRINT;
+	PROC SQL OUTOBS=&nobs;
+		CREATE TABLE dshead AS
+			SELECT * 
+			FROM &libn..&dataset.;
 	RUN;
 	
-	DATA overview1;
-		SET overview (keep=NAME TYPE LENGTH LABEL FORMAT);
-	RUN;
-	
-	PROC SQL;
-		CREATE TABLE overview2 AS
-			SELECT
-					NAME
-				,	CASE
-						WHEN TYPE = 1
-						THEN "Numeric"
-						WHEN TYPE = 2
-						THEN "Character"
-						ELSE "Unknown"
-					END AS datatypes
-				,	LENGTH
-				,	LABEL
-				,	FORMAT
-			FROM overview1;
-	RUN;
-	
-	%printer(dataset=overview2, title=Metadata van de kolommen, output=&output);
-	%dsdelete(ds=overview overview1 overview2);
-	
+	%printer(dataset=dshead, title=Eerste &nobs regels);
+
 	/*Aangeven dat de macro klaar is*/
 	%put ---------------------------------------------------------------;
 

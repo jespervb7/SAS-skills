@@ -95,6 +95,7 @@ TODO:
 		LENGTH Kolomnaam $40.;
 		LENGTH Aantal_regels 8;
 		LENGTH Aantal_gevulde_regels 8;
+		LENGTH Aantal_unieke_waardes 8;
 	RUN;
 
 	/*Doorloopt elke kolom in de database en voert hier de acties op uit*/
@@ -115,10 +116,11 @@ TODO:
 		PROC SQL;
 			CREATE TABLE stap1_&i. AS
 				SELECT 
-						"&tabelnaam"		AS Tabelnaam
-					,	"&kolomnaam"		AS Kolomnaam
-					,	COUNT(*) 			AS Aantal_regels
-					,	COUNT(&kolomnaam)	AS Aantal_gevulde_regels
+						"&tabelnaam"						AS Tabelnaam
+					,	"&kolomnaam"						AS Kolomnaam
+					,	COUNT(*) 							AS Aantal_regels
+					,	COUNT(&kolomnaam)					AS Aantal_gevulde_regels
+					,	COUNT(DISTINCT &kolomnaam.)			AS Aantal_unieke_waardes
 				FROM &database_tabel;
 		RUN;
 
@@ -127,6 +129,7 @@ TODO:
 			LENGTH Kolomnaam $40.;
 			LENGTH Aantal_regels 8;
 			LENGTH Aantal_gevulde_regels 8;
+			LENGTH Aantal_unieke_waardes 8;
 			SET stap1_&i.;
 		RUN;
 		
@@ -147,8 +150,10 @@ TODO:
 				,	Kolomnaam
 				,	aantal_regels														FORMAT COMMA10.0
 				,	aantal_gevulde_regels												FORMAT COMMA10.0
+				,	aantal_unieke_waardes												FORMAT COMMA10.0
 				,	(aantal_regels-aantal_gevulde_regels) 		AS Missende_regels		FORMAT COMMA10.0
 				,	(aantal_gevulde_regels/aantal_regels)		AS Percentage_gevuld 	FORMAT PERCENT10.2
+				,	(aantal_unieke_waardes/aantal_regels)		AS Percentage_uniek		FORMAT PERCENT10.2
 			FROM null_controle
 			WHERE tabelnaam IS NOT NULL;
 	RUN;

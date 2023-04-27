@@ -43,6 +43,8 @@ TODO:
 
         dataset	 	=		/*De dataset die je wilt bekijkt zien*/,
         
+        title		=	0	/*Geeft een titel mee aan de output, Default is geen titel*/,
+        
         output		=	0	/*Aangeven of er een output dataset moet komen of dat er alleen een printversie moet komen*/
 
 );
@@ -61,9 +63,19 @@ TODO:
 
 	%put --- dataset		=		&dataset;
 	
+	%put --- title			=		&title.;
+	
 	%put --- output			=		&output;
 
 	%put ---------------------------------------------------------------;
+
+	%IF &title. = 0 %THEN %DO;
+		title ' ';
+	%END;
+	
+	%ELSE %DO;
+		title height=10 bold "&title";
+	%END;
 
 	%IF &output. = 0 %THEN %DO;
 		PROC PRINT DATA=&libn..&dataset.;
