@@ -1,14 +1,17 @@
 /**********************************************************************************************
 Macro Naam: dshead
-Doel: Geeft output van de eerste 10 regels (by default) van een dataset.
-Beschrijving:
+Doel:
+Beschrijving: Neemt een dataset en print hiervan de eerste N regels, default van N is 10.
 Opmerkingen:
-Afhankelijkheden: [een voorbeeld van een afhankelijkheid is een andere macro die in dit script zal worden aangeroepen]
+Afhankelijkheden: printer macro
    
 Parameters: 
 Naam		Optioneel (Y/N)		Voorbeld input		Beschrijving
 
-DATASET		N					Datamartmiaz		Neemt de dataset en performeert wat transformaties
+libn		Y					sashelp				De libref waar de dataset zich bevind, default is work
+dataset		N					Datamartmiaz		Neemt de dataset en performeert wat transformaties
+nobs		Y					100					Neemt een numerieke waarde, hiermee geef je aan hoeveel
+													regels je in je output wilt zien.
 
 Voorbeeld van gebruik:
 
@@ -28,7 +31,7 @@ Vnr 	Wie   					Wanneer  	Wat
 =========================================================================================================
 
 TODO:
-- logging toevoegen
+
 
 =========================================================================================================
 **********************************************************************************************/
