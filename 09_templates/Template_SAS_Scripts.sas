@@ -7,12 +7,12 @@
   Draaien met: SAS Enterprise Guide 7.1
   Korte naam : 
   Versienr   : 1.0
-  Aanvrager  : Rob Schooten
+  Aanvrager  : 
   Parameters : 
   Frequentie : Onbekend
   Invoer     : CSV-bestand
   Uitvoer    : Excel-bestand, CSV-bestand
-  Locatie    : \\EUR.TLD\Progdata\ZKA\Operations Support\WLZ\97. Teammap Support\08. Persoonlijk\Jesper van Beemdelust
+  Locatie    : 
   Korte beschrijving:
 
 ---------------------------------------------------------------------------------------------------------
